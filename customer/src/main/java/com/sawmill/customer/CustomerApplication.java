@@ -18,8 +18,8 @@ public class CustomerApplication {
 	@Value("${spring.kafka.bootstrap-servers}")
 	private String kafkaBootstrapServers;
 
-	@Value("${order.schedule.rate.ms}")
-	private String orderScheduleRateMs;
+	@Value("${customer.schedule.rate.ms}")
+	private String customerScheduleRateMs;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerApplication.class, args);
@@ -28,6 +28,6 @@ public class CustomerApplication {
 	@PostConstruct
 	public void logKafkaBootstrapServers() {
 		logger.info("Kafka Bootstrap Servers: {}", kafkaBootstrapServers);
-		logger.info("Order Schedule Rate: {} ms", orderScheduleRateMs);
+		logger.info("Order Schedule Rate: {} ms", customerScheduleRateMs);
 	}
 }

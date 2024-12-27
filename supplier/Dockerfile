@@ -1,4 +1,7 @@
-FROM eclipse-temurin:21
+ARG DOCKER_REGISTRY
+ARG IMG_JAVA
+FROM ${DOCKER_REGISTRY}${IMG_JAVA}
+
 
 # Set the working directory in the container
 WORKDIR /app

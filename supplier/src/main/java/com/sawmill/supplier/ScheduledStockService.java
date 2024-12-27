@@ -18,7 +18,7 @@ public class ScheduledStockService {
 
     private Random random = new Random();
 
-    @Scheduled(fixedRateString = "${stock.schedule.rate.ms:60000}") // Default to every 60 seconds
+    @Scheduled(fixedRateString = "${supplier.schedule.rate.ms:60000}") // Default to every 60 seconds
     public void sendScheduledStock() {
         int quantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
         Stock stock = new Stock(WoodType.OAK, quantity); // You can change the wood type if necessary
