@@ -8,6 +8,7 @@
     <modules>
         <module>customer</module>
         <module>supplier</module>
+        <module>stock-api</module>
     </modules>
     <dependencyManagement>
         <dependencies>

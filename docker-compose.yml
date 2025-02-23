@@ -80,27 +80,28 @@ services:
   #   depends_on:
   #     - postgres
 
-  # stock:
-  #   build:
-  #     context: .
-  #     dockerfile: stock/Dockerfile
-  #     args:
-  #       DOCKER_REGISTRY: $DOCKER_REGISTRY
-  #       IMG_PYTHON: $IMG_PYTHON
-  #   container_name: stock
-  #   environment:
-  #     DATABASE_URL: postgresql://postgres:yourpassword@postgres:5432/mydatabase
-  #     OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED: true
-  #     OTEL_PYTHON_LOG_CORRELATION: true
-  #     OTEL_SERVICE_NAME: stock
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4317
-  #     OTEL_TRACES_EXPORTER: otlp
-  #     OTEL_LOGS_EXPORTER: otlp
-  #     OTEL_METRICS_EXPORTER: otlp
-  #   ports:
-  #     - 8006:5000
-  #   depends_on:
-  #     - postgres
+  stock-api:
+    build:
+      context: .
+      dockerfile: stock-api/Dockerfile
+      args:
+        DOCKER_REGISTRY: $DOCKER_REGISTRY
+        IMG_JAVA: $IMG_JAVA
+    container_name: stock
+    environment:
+      SPRING_DATASOURCE_URL: postgresql://postgres:5432/mydatabase
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: yourpassword
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
+      OTEL_SERVICE_NAME: stock-api
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4318
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+    ports:
+      - 8006:8080
+    depends_on:
+      - postgres
 
   # ordercheck:
   #   build:
