@@ -88,8 +88,10 @@ services:
         DOCKER_REGISTRY: $DOCKER_REGISTRY
         IMG_JAVA: $IMG_JAVA
     container_name: stock
+    volumes:
+      - ./bin/$JAVA_AGENT:/app/opentelemetry-javaagent.jar
     environment:
-      SPRING_DATASOURCE_URL: postgresql://postgres:5432/mydatabase
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/mydatabase
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: yourpassword
       JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
