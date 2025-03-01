@@ -1,4 +1,4 @@
-package com.sawmill.supplier;
+package com.example.supplier;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

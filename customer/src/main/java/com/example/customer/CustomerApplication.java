@@ -1,4 +1,4 @@
-package com.sawmill.customer;
+package com.example.customer;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;

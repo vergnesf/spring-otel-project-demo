@@ -1,4 +1,4 @@
-package com.sawmill.customer;
+package com.example.customer;
 
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;

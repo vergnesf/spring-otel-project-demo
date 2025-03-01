@@ -1,4 +1,4 @@
-package com.sawmill.supplier;
+package com.example.supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,4 +1,4 @@
-package com.sawmill.customer;
+package com.example.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.sawmill.supplier;
+package com.example.supplier;
 
 /**
  * Enum representing the different types of wood available

@@ -1,4 +1,4 @@
-package com.sawmill.customer;
+package com.example.customer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
