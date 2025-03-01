@@ -9,6 +9,7 @@
         <module>customer</module>
         <module>supplier</module>
         <module>stock-api</module>
+        <module>order-api</module>
     </modules>
     <dependencyManagement>
         <dependencies>
