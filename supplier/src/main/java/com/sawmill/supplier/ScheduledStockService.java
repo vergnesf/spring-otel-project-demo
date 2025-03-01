@@ -22,7 +22,7 @@ public class ScheduledStockService {
     public void sendScheduledStock() {
         int quantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
         Stock stock = new Stock(WoodType.OAK, quantity); // You can change the wood type if necessary
-        stockService.sendStock(stock);
+        stockService.sendStockUpdate(stock); // Fixed to match StockService method
         logger.info("Stock sent: {}", stock);
     }
 }
