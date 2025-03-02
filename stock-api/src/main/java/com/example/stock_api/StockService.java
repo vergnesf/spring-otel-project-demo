@@ -43,7 +43,7 @@ public class StockService {
      * @return an Optional containing the stock if found
      */
     @Transactional(readOnly = true)
-    public Optional<Stock> getStockByWoodType(String woodType) {
+    public Optional<Stock> getStockByWoodType(WoodType woodType) {
         logger.info("Looking up stock for wood type: {}", woodType);
         return stockRepository.findByWoodType(woodType);
     }
@@ -83,5 +83,36 @@ public class StockService {
     public void deleteStock(Long id) {
         logger.info("Deleting stock ID: {}", id);
         stockRepository.deleteById(id);
+    }
+
+    /**
+     * Adds quantity to existing stock or creates a new stock if it doesn't exist
+     * 
+     * @param woodType the wood type
+     * @param quantity the quantity to add
+     * @return the updated or created stock
+     */
+    public Stock addStock(WoodType woodType, int quantity) {
+        try {
+            // Convertir la chaîne en enum WoodType
+            Optional<Stock> stockOptional = stockRepository.findByWoodType(woodType);
+
+            if (!stockOptional.isPresent()) {
+                logger.info("Stock not found for wood type {}, creating new stock", woodType);
+                Stock newStock = new Stock();
+                newStock.setWoodType(woodType);
+                newStock.setQuantity(quantity);
+                return saveStock(newStock);
+            }
+
+            Stock stock = stockOptional.get();
+            stock.setQuantity(stock.getQuantity() + quantity);
+            return saveStock(stock);
+        } catch (IllegalArgumentException e) {
+            logger.error("Erreur lors de la conversion du type de bois {} en énumération WoodType", woodType, e);
+            throw new IllegalArgumentException(
+                    "Type de bois non valide : " + woodType + ". Les valeurs valides sont : " +
+                            java.util.Arrays.toString(WoodType.values()));
+        }
     }
 }

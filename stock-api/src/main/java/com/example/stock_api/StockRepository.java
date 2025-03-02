@@ -16,5 +16,5 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
      * @param woodType the type of wood to search for
      * @return an Optional containing the stock if found
      */
-    Optional<Stock> findByWoodType(String woodType);
+    Optional<Stock> findByWoodType(WoodType woodType);
 }

@@ -143,7 +143,7 @@ services:
       - ./bin/$JAVA_AGENT:/app/opentelemetry-javaagent.jar
     environment:
       KAFKA_BOOTSTRAP_SERVERS: broker:29092
-      API_ORDER_URL: http://stock:8080
+      API_STOCK_URL: http://stock:8080
       JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
       OTEL_SERVICE_NAME: stockcheck
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4318
@@ -192,7 +192,7 @@ services:
               properties:
                 bootstrap.servers: "broker:29092"
     ports:
-      - 8080:8080
+      - 8004:8080
     depends_on:
       broker:
         condition: service_healthy

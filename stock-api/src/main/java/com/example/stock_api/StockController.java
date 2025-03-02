@@ -47,24 +47,12 @@ public class StockController {
                         @ApiResponse(responseCode = "200", description = "Found the stock item"),
                         @ApiResponse(responseCode = "404", description = "Stock item not found")
         })
-        public ResponseEntity<Object> getStockByWoodType(@PathVariable String woodType) {
+        public ResponseEntity<Object> getStockByWoodType(@PathVariable WoodType woodType) {
                 logger.info("GET request for stock with wood type: {}", woodType);
                 return stockService.getStockByWoodType(woodType)
                                 .map(stock -> ResponseEntity.ok().body((Object) stock))
                                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
                                                 .body(Map.of("error", "Stock not found for wood type: " + woodType)));
-        }
-
-        @PostMapping
-        @Operation(summary = "Create a new stock item")
-        @ApiResponses(value = {
-                        @ApiResponse(responseCode = "201", description = "Stock created successfully", content = @Content(schema = @Schema(implementation = Stock.class))),
-                        @ApiResponse(responseCode = "400", description = "Invalid stock data")
-        })
-        public ResponseEntity<Stock> createStock(@Valid @RequestBody Stock stock) {
-                logger.info("POST request to create stock: {}", stock);
-                Stock savedStock = stockService.saveStock(stock);
-                return ResponseEntity.status(HttpStatus.CREATED).body(savedStock);
         }
 
         @PutMapping("/type/{woodType}")
@@ -73,7 +61,7 @@ public class StockController {
                         @ApiResponse(responseCode = "200", description = "Stock updated successfully"),
                         @ApiResponse(responseCode = "404", description = "Stock not found")
         })
-        public ResponseEntity<Object> updateStockByWoodType(@PathVariable String woodType,
+        public ResponseEntity<Object> updateStockByWoodType(@PathVariable WoodType woodType,
                         @Valid @RequestBody Stock stock) {
                 logger.info("PUT request to update stock with wood type {}: {}", woodType, stock);
                 return stockService.getStockByWoodType(woodType)
@@ -114,7 +102,7 @@ public class StockController {
                         @ApiResponse(responseCode = "204", description = "Stock deleted successfully"),
                         @ApiResponse(responseCode = "404", description = "Stock not found")
         })
-        public ResponseEntity<Object> deleteStockByWoodType(@PathVariable String woodType) {
+        public ResponseEntity<Object> deleteStockByWoodType(@PathVariable WoodType woodType) {
                 logger.info("DELETE request for stock with wood type: {}", woodType);
                 return stockService.getStockByWoodType(woodType)
                                 .map(stock -> {
@@ -123,5 +111,24 @@ public class StockController {
                                 })
                                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND)
                                                 .body(Map.of("error", "Stock not found for wood type: " + woodType)));
+        }
+
+        @PutMapping("/add/{woodType}")
+        @Operation(summary = "Add stock quantity, create if not exists")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Stock updated or created successfully"),
+                        @ApiResponse(responseCode = "400", description = "Invalid quantity")
+        })
+        public ResponseEntity<Stock> addStock(@PathVariable WoodType woodType,
+                        @RequestBody Map<String, Integer> payload) {
+                Integer quantity = payload.get("quantity");
+                if (quantity == null) {
+                        logger.warn("Invalid quantity add request for wood type {}: {}", woodType, payload);
+                        return ResponseEntity.badRequest().build();
+                }
+
+                logger.info("PUT request to add {} units to stock of wood type: {}", quantity, woodType);
+                Stock updatedStock = stockService.addStock(woodType, quantity);
+                return ResponseEntity.ok(updatedStock);
         }
 }
