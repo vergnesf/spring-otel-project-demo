@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class StockService {
 
     private static final Logger logger = LoggerFactory.getLogger(StockService.class);
-    private static final String TOPIC = "stock-updates";
+    private static final String TOPIC = "stocks";
 
     @Autowired
     private KafkaTemplate<String, Stock> kafkaTemplate;

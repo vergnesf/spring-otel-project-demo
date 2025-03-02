@@ -1,5 +1,12 @@
 package com.example.customer;
 
 public enum WoodType {
-    OAK, MAPLE, BIRCH, ELM, PINE
+    MAPLE,
+    OAK,
+    PINE,
+    CHERRY,
+    WALNUT,
+    MAHOGANY,
+    BIRCH,
+    CEDAR
 }

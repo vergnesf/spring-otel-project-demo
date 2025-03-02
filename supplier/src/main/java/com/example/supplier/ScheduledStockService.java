@@ -20,9 +20,15 @@ public class ScheduledStockService {
 
     @Scheduled(fixedRateString = "${supplier.schedule.rate.ms:60000}") // Default to every 60 seconds
     public void sendScheduledStock() {
-        int quantity = random.nextInt(100) + 1; // Random quantity between 1 and 100
-        Stock stock = new Stock(WoodType.OAK, quantity); // You can change the wood type if necessary
-        stockService.sendStockUpdate(stock); // Fixed to match StockService method
+
+        // Récupérer tous les types de bois disponibles
+        WoodType[] woodTypes = WoodType.values();
+        // Sélectionner aléatoirement un type de bois
+        WoodType randomWoodType = woodTypes[random.nextInt(woodTypes.length)];
+        // Random quantity between 1 and 100
+        int quantity = random.nextInt(100) + 1;
+        Stock stock = new Stock(randomWoodType, quantity);
+        stockService.sendStockUpdate(stock);
         logger.info("Stock sent: {}", stock);
     }
 }

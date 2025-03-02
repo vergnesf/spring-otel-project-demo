@@ -24,7 +24,7 @@ services:
       - ./bin/$JAVA_AGENT:/app/opentelemetry-javaagent.jar
     environment:
       KAFKA_BOOTSTRAP_SERVERS: broker:29092
-      SCHEDULE_RATE_MS: 10000
+      SCHEDULE_RATE_MS: 60000
       JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
       OTEL_SERVICE_NAME: customer
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4318
@@ -47,7 +47,7 @@ services:
       - ./bin/$JAVA_AGENT:/app/opentelemetry-javaagent.jar
     environment:
       KAFKA_BOOTSTRAP_SERVERS: broker:29092
-      SCHEDULE_RATE_MS: 10000
+      SCHEDULE_RATE_MS: 60000
       JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
       OTEL_SERVICE_NAME: supplier
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4318
@@ -108,49 +108,51 @@ services:
     depends_on:
       - postgres
 
-  # ordercheck:
-  #   build:
-  #     context: .
-  #     dockerfile: ordercheck/Dockerfile
-  #     args:
-  #       DOCKER_REGISTRY: $DOCKER_REGISTRY
-  #       IMG_PYTHON: $IMG_PYTHON
-  #   container_name: ordercheck
-  #   environment:
-  #     KAFKA_BOOTSTRAP_SERVERS: broker:29092
-  #     API_URL: http://order:5000
-  #     OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED: true
-  #     OTEL_PYTHON_LOG_CORRELATION: true
-  #     OTEL_SERVICE_NAME: ordercheck
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4317
-  #     OTEL_TRACES_EXPORTER: otlp
-  #     OTEL_LOGS_EXPORTER: otlp
-  #     OTEL_METRICS_EXPORTER: otlp
-  #   depends_on:
-  #     broker:
-  #       condition: service_healthy
+  ordercheck:
+    build:
+      context: .
+      dockerfile: ordercheck/Dockerfile
+      args:
+        DOCKER_REGISTRY: $DOCKER_REGISTRY
+        IMG_JAVA: $IMG_JAVA
+    container_name: ordercheck
+    volumes:
+      - ./bin/$JAVA_AGENT:/app/opentelemetry-javaagent.jar
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: broker:29092
+      API_ORDER_URL: http://order:8080
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
+      OTEL_SERVICE_NAME: ordercheck
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4318
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+    depends_on:
+      broker:
+        condition: service_healthy
 
-  # suppliercheck:
-  #   build:
-  #     context: .
-  #     dockerfile: suppliercheck/Dockerfile
-  #     args:
-  #       DOCKER_REGISTRY: $DOCKER_REGISTRY
-  #       IMG_PYTHON: $IMG_PYTHON
-  #   container_name: suppliercheck
-  #   environment:
-  #     KAFKA_BOOTSTRAP_SERVERS: broker:29092
-  #     API_URL: http://stock:5000
-  #     OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED: true
-  #     OTEL_PYTHON_LOG_CORRELATION: true
-  #     OTEL_SERVICE_NAME: suppliercheck
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4317
-  #     OTEL_TRACES_EXPORTER: otlp
-  #     OTEL_LOGS_EXPORTER: otlp
-  #     OTEL_METRICS_EXPORTER: otlp
-  #   depends_on:
-  #     broker:
-  #       condition: service_healthy
+  stockcheck:
+    build:
+      context: .
+      dockerfile: stockcheck/Dockerfile
+      args:
+        DOCKER_REGISTRY: $DOCKER_REGISTRY
+        IMG_JAVA: $IMG_JAVA
+    container_name: stockcheck
+    volumes:
+      - ./bin/$JAVA_AGENT:/app/opentelemetry-javaagent.jar
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: broker:29092
+      API_ORDER_URL: http://stock:8080
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
+      OTEL_SERVICE_NAME: stockcheck
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4318
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+    depends_on:
+      broker:
+        condition: service_healthy
 
   # ordermanagement:
   #   build:

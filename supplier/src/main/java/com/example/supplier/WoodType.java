@@ -5,9 +5,12 @@ package com.example.supplier;
  * for processing in the sawmill system.
  */
 public enum WoodType {
-    OAK,
     MAPLE,
+    OAK,
+    PINE,
+    CHERRY,
+    WALNUT,
+    MAHOGANY,
     BIRCH,
-    ELM,
-    PINE
+    CEDAR
 }

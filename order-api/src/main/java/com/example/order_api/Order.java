@@ -26,7 +26,7 @@ public class Order {
     
     @NotBlank(message = "Order type is required")
     @Column(nullable = false)
-    private String type;
+    private String woodType;
     
     @NotNull(message = "Quantity is required")
     @Min(value = 1, message = "Quantity must be at least 1")

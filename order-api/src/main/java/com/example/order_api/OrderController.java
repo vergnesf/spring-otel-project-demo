@@ -46,7 +46,7 @@ public class OrderController {
         @ApiResponse(responseCode = "400", description = "Invalid order data")
     })
     public ResponseEntity<Order> createOrder(@Valid @RequestBody Order order) {
-        logger.info("Creating new order of type: {}", order.getType());
+        logger.info("Creating new order of type: {}", order.getWoodType());
         Order newOrder = orderService.createOrder(order);
         logger.info("Created order with ID: {}", newOrder.getId());
         return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
