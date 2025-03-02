@@ -12,6 +12,7 @@
         <module>order-api</module>
         <module>ordercheck</module>
         <module>stockcheck</module>
+        <module>ordermanagement</module>
     </modules>
     <dependencyManagement>
         <dependencies>

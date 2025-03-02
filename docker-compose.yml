@@ -154,28 +154,29 @@ services:
       broker:
         condition: service_healthy
 
-  # ordermanagement:
-  #   build:
-  #     context: .
-  #     dockerfile: ordermanagement/Dockerfile
-  #     args:
-  #       DOCKER_REGISTRY: $DOCKER_REGISTRY
-  #       IMG_PYTHON: $IMG_PYTHON
-  #   container_name: ordermanagement
-  #   environment:
-  #     API_URL_ORDERS: http://order:5000
-  #     API_URL_STOCKS: http://stock:5000
-  #     INTERVAL_SECONDS: 20
-  #     OTEL_PYTHON_LOGGING_AUTO_INSTRUMENTATION_ENABLED: true
-  #     OTEL_PYTHON_LOG_CORRELATION: true
-  #     OTEL_SERVICE_NAME: ordermanagement
-  #     OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4317
-  #     OTEL_TRACES_EXPORTER: otlp
-  #     OTEL_LOGS_EXPORTER: otlp
-  #     OTEL_METRICS_EXPORTER: otlp
-  #   depends_on:
-  #     - order
-  #     - stock
+  ordermanagement:
+    build:
+      context: .
+      dockerfile: ordermanagement/Dockerfile
+      args:
+        DOCKER_REGISTRY: $DOCKER_REGISTRY
+        IMG_JAVA: $IMG_JAVA
+    container_name: ordermanagement
+    volumes:
+      - ./bin/$JAVA_AGENT:/app/opentelemetry-javaagent.jar
+    environment:
+      API_ORDER_URL: http://order:8080
+      API_STOCK_URL: http://stock:8080
+      JAVA_TOOL_OPTIONS: "-javaagent:/app/opentelemetry-javaagent.jar"
+      SCHEDULE_RATE_MS: 60000
+      OTEL_SERVICE_NAME: ordermanagement
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel:4318
+      OTEL_TRACES_EXPORTER: otlp
+      OTEL_LOGS_EXPORTER: otlp
+      OTEL_METRICS_EXPORTER: otlp
+    depends_on:
+      - order-api
+      - stock-api
 
   # ###############################################################################################
   # Kafka part
