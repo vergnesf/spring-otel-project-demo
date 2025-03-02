@@ -35,7 +35,7 @@ docker compose up -d --build
 ### Useful URLs 🌐
 
 - [Grafana](http://localhost:3000/) 📊
-- [AKHQ](http://localhost:8084/) 🛠️
+- [AKHQ](http://localhost:8082/) 🛠️
 - [Adminer](http://localhost:8081/) 🗃️
 - [Order API Swagger UI](http://localhost:8005/swagger-ui.html) 📝
 - [Stock API Swagger UI](http://localhost:8006/swagger-ui.html) 📊

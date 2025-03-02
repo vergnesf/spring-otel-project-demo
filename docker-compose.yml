@@ -193,7 +193,7 @@ services:
               properties:
                 bootstrap.servers: "broker:29092"
     ports:
-      - 8004:8080
+      - 8082:8080
     depends_on:
       broker:
         condition: service_healthy
